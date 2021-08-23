@@ -5,6 +5,11 @@ node {
   stage ('Compile-Package') {
     sh 'mvn package'
   }
+  stage ('deploy to tomcat'){
+  sshagent(['dev-ssh']) {
+    sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@172.31.43.144:/etc/tomcat8/webapp'
+}
+  }
   stage('email notification'){
     mail bcc: '', body: '''Hi Laxmi, Good Morning.
 
